@@ -59,7 +59,7 @@ def parse_duckling_time_as_interval(
 
 
 def format_isotime_by_grain(isotime, grain=None):
-    time = parser.isoparse(isotime)
+    value = parser.isoparse(isotime)
     grain_format = {
         "second": "%I:%M:%S%p, %A %b %d, %Y",
         "day": "%A %b %d, %Y",
@@ -68,7 +68,7 @@ def format_isotime_by_grain(isotime, grain=None):
         "year": "%Y",
     }
     timeformat = grain_format.get(grain, "%I:%M%p, %A %b %d, %Y")
-    time_formatted = time.strftime(timeformat)
+    time_formatted = value.strftime(timeformat)
     return time_formatted
 
 
@@ -77,11 +77,11 @@ def parse_duckling_time(
 ) -> Optional[Dict[Text, Any]]:
     timeinfo = timeentity.get("additional_info", {})
     if timeinfo.get("type") == "value":
-        time = timeinfo.get("value")
+        value = timeinfo.get("value")
         grain = timeinfo.get("grain")
         parsedtime = {
-            "time": time,
-            "time_formatted": format_isotime_by_grain(time, grain),
+            "time": value,
+            "time_formatted": format_isotime_by_grain(value, grain),
             "grain": grain,
         }
         return parsedtime
